@@ -4,7 +4,7 @@ import spacy
 #dataframe processing
 class DataFrameProcessor:
     def __init__(self):
-        self.nlp = spacy.load('en_core_web_sm')
+        self.nlp = spacy.load('en_core_web_lg')
 
     def get_entities(self, file):
         if file.endswith('.csv'):
@@ -36,7 +36,7 @@ class DataFrameProcessor:
 # sentence processing
 class SentenceProcessor:
     def __init__(self):
-        self.nlp = spacy.load('en_core_web_sm')
+        self.nlp = spacy.load('en_core_web_lg')
 
     def get_entities(self, sentence):
         doc = self.nlp(sentence)
@@ -47,6 +47,6 @@ class SentenceProcessor:
 
 if __name__ == "__main__":
     process = DataFrameProcessor()
-    print(process.process('data.csv'))
+    print(process.process('fastapi/test/biostats.csv'))
     sentence = SentenceProcessor()
     print(sentence.get_entities('Scott is using his iPhone in the office. The office is in Glasgow.'))
