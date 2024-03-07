@@ -2,22 +2,26 @@ import React, { useState, useEffect } from 'react';
 import AceEditor from 'react-ace';
 import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
+import { marked } from 'marked';
 
 import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/theme-monokai';
 
-import MarkdownCell from './MarkdownCell';
-
 function CopilotCell() {
-  const [code, setCode] = useState('');
+  const [file, setFile] = useState('')
   const [output, setOutput] = useState('');
+  const [image, setImage] = useState(null);
   const [kernelId, setKernelId] = useState(null);
   const [socket, setSocket] = useState(null);
-  const [content, setContent] = useState('');
-  const [file, setFile] = useState('')
-  const handleMarkdownChange = (newContnet) => {
-    setContent(newContnet);
-  }
+  const [markdowncontent, setMarkdownContent] = useState('');
+  const [codecontent, setCodeContent] = useState('');
+  const [masked, setMasked] = useState('');
+  const [html, setHtml] = useState('');
+
+  const handleConvert = () => {
+    const convertedHtml = marked(markdowncontent);
+    setHtml(convertedHtml);
+  };
 
   useEffect(() => {
     const createKernel = async () => {
@@ -35,10 +39,13 @@ function CopilotCell() {
   useEffect(() => {
     if (kernelId) {
       const socket = new W3CWebSocket(`ws://localhost:8888/api/kernels/${kernelId}/channels?token=123456`);
+      console.log(kernelId)
       socket.onmessage = (message) => {
         const data = JSON.parse(message.data);
         if (data.header.msg_type === 'execute_result' || data.header.msg_type === 'stream') {
           setOutput(data.content.text);
+        } else if (data.header.msg_type === 'display_data') {
+          setImage(data.content.data['image/png']);
         }
       };
       setSocket(socket);
@@ -63,7 +70,7 @@ function CopilotCell() {
             parent_header: {},
             metadata: {},  
             content: {
-              code,
+              code: codecontent,
               silent: false,
               store_history: true,
               user_expressions: {},
@@ -83,16 +90,20 @@ function CopilotCell() {
   const handleGenerateCode = async () => {
     try {
       const formData = new FormData();
+      formData.append('sentence', markdowncontent);
       formData.append('file', file);
 
-      const response = await axios.post(`http://localhost:8000/request?sentence=${content}`, formData, {
+      console.log(markdowncontent, file);
+      const response = await axios.post(`http://localhost:8000/request`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
       const generatedCode = response.data.content;
-      setContent(generatedCode);
+      const maskedCode = response.data.masked;
+      setCodeContent(generatedCode);
+      setMasked(maskedCode);
     } catch (error) {
       console.error('Failed to generate code:', error);
     }
@@ -100,15 +111,25 @@ function CopilotCell() {
 
   return (
     <div>
-      <MarkdownCell onChange={handleMarkdownChange} />
+      <AceEditor
+        mode="markdown"
+        theme="monokai"
+        onChange={setMarkdownContent}
+        name="UNIQUE_ID_OF_DIV"
+        editorProps={{ $blockScrolling: true }}
+      />
+      <button onClick={handleConvert}>
+        Convert
+      </button>
+      <div dangerouslySetInnerHTML={{ __html: html }} />
       <input type='file' onChange={handleFileChange} />
       <button onClick={handleGenerateCode}>Generate Code</button>
-      <pre>{content}</pre>
+      <pre>{masked}</pre>
       <AceEditor
         mode="python"
         theme="monokai"
-        value={content}
-        onChange={setCode}
+        value={codecontent}
+        onChange={setCodeContent}
         name="UNIQUE_ID_OF_DIV"
         editorProps={{ $blockScrolling: true }}
       />
@@ -116,6 +137,7 @@ function CopilotCell() {
         Run
       </button>
       <pre>{output}</pre>
+      {image && <img src={`data:image/png;base64,${image}`} alt="plot" />}
     </div>
   );
 }

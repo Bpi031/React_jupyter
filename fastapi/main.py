@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from fastapi import File, UploadFile
+from fastapi import File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
-
+import re
 from GPTresponse import AzureOpenAIRequest
 from NER_spacy import DataFrameProcessor, SentenceProcessor
 
@@ -52,7 +52,11 @@ async def process_sentence(sentence: str):
 
 #final request process
 @app.post("/request")
-async def combined_process(sentence:str, file: UploadFile = File(...)):
+async def combined_process(sentence: str = Form(...), file: UploadFile = File(...)):
+    
+    # Mask the sentence
+    processor = SentenceProcessor()
+    entities = processor.get_entities(sentence)
     
     # Mask the file 
     contents = await file.read()
@@ -62,19 +66,13 @@ async def combined_process(sentence:str, file: UploadFile = File(...)):
     df = processor.process(file.filename)
     os.remove(file.filename) 
 
-    # Mask the sentence
-    processor = SentenceProcessor()
-    sentence = processor.get_entities(sentence)
-
-    combine_request = f"Code instruction:{sentence}\n{df}"
+    combine_request = "Code instruction:{}\n{}".format(entities, df)
 
     # Send to GPT
     azure_request = AzureOpenAIRequest()
     ans = azure_request.get_response(combine_request, "You are a data analysis programmer, don't include any explanations in your responses.")
     content = ans.choices[0].message.content
-    return {"content": content}
+    #match = re.search('```.*?\n(.*?)```', content, re.DOTALL)
+    #result = match.group(1).strip() if match else None
+    return {"content": content, "masked": combine_request}
    
-if __name__ == "__main__":
-    azure_request = AzureOpenAIRequest()
-    ans = azure_request.get_response("give me an example of pandas import", "You are a data analysis programmer.")
-    print(ans)
