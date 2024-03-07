@@ -78,7 +78,7 @@ function CopilotCell() {
 
   const handleGenerateCode = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/sentence', {
+      const response = await axios.post('http://localhost:8000/GPTresponse', {
         sentence: content,
       });
 
