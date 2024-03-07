@@ -9,6 +9,7 @@ import 'ace-builds/src-noconflict/theme-monokai';
 function CodeCell() {
   const [code, setCode] = useState('');
   const [output, setOutput] = useState('');
+  const [image, setImage] = useState(null);
   const [kernelId, setKernelId] = useState(null);
   const [socket, setSocket] = useState(null);
 
@@ -32,6 +33,8 @@ function CodeCell() {
         const data = JSON.parse(message.data);
         if (data.header.msg_type === 'execute_result' || data.header.msg_type === 'stream') {
           setOutput(data.content.text);
+        } else if (data.header.msg_type === 'display_data') {
+          setImage(data.content.data['image/png']);
         }
       };
       setSocket(socket);
@@ -82,6 +85,7 @@ function CodeCell() {
         Run
       </button>
       <pre>{output}</pre>
+      {image && <img src={`data:image/png;base64,${image}`} alt="plot" />}
     </div>
   );
 }
