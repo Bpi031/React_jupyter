@@ -14,7 +14,7 @@ function CopilotCell() {
   const [kernelId, setKernelId] = useState(null);
   const [socket, setSocket] = useState(null);
   const [content, setContent] = useState('');
-
+  const [file, setFile] = useState('')
   const handleMarkdownChange = (newContnet) => {
     setContent(newContnet);
   }
@@ -76,10 +76,19 @@ function CopilotCell() {
     }
   };
 
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
   const handleGenerateCode = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/GPTresponse', {
-        sentence: content,
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await axios.post(`http://localhost:8000/request?sentence=${content}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       const generatedCode = response.data.content;
@@ -92,6 +101,7 @@ function CopilotCell() {
   return (
     <div>
       <MarkdownCell onChange={handleMarkdownChange} />
+      <input type='file' onChange={handleFileChange} />
       <button onClick={handleGenerateCode}>Generate Code</button>
       <pre>{content}</pre>
       <AceEditor
