@@ -7,5 +7,3 @@ cd jupyter_react && npm start
 # New terminal
 cd fastapi && uvicorn main:app --reload
 
-## BUG
-Reactjs call infinity jupyter kernels
