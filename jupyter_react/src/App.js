@@ -12,24 +12,36 @@ function App() {
     setCells([...cells, { type, id: Math.random() }]);
   };
 
+  const deleteCell = (id) => {
+    setCells(cells.filter(cell => cell.id !== id));
+  };
+
   return (
-    <div>
-      <FileUpload />
-      <button onClick={() => addCell('code')}>Add Code Cell</button>
-      <button onClick={() => addCell('markdown')}>Add Markdown Cell</button>
-      <button onClick={() => addCell('ner')}>Add NER Cell</button>
-      <KernelManager>
+    <div className="flex">
+      <div className="flex-grow">
+        <KernelManager>
+          {cells.map((cell) =>
+            <div key={cell.id}>
+              {cell.type === 'code' ? (
+                <CodeCell key={cell.id} />
+              ) : cell.type === 'markdown' ? (
+                <MarkdownCell key={cell.id} />
+              ) : (
+                <CopilotCell key={cell.id} />
+              )}
+            </div>
+          )}
+        </KernelManager>
+      </div>
+      <div className="fixed right-0 top-0 h-screen overflow-auto space-y-4 p-4 flex flex-col">
+        <FileUpload />
+        <button onClick={() => addCell('code')} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-md">Add Code Cell</button>
+        <button onClick={() => addCell('markdown')} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-md">Add Markdown Cell</button>
+        <button onClick={() => addCell('ner')} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-md">Add NER Cell</button>
         {cells.map((cell) =>
-          cell.type === 'code' ? (
-            <CodeCell key={cell.id} />
-          ) : cell.type === 'markdown' ? (
-            <MarkdownCell key={cell.id} />
-          ) : (
-            <CopilotCell key={cell.id} />
-          )
+          <button key={cell.id} onClick={() => deleteCell(cell.id)} className="w-full py-2 px-4 bg-red-500 text-white rounded-md">Delete</button>
         )}
-      </KernelManager>
-      
+      </div>
     </div>
   );
 }

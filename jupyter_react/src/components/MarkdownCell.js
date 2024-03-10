@@ -22,6 +22,8 @@ function MarkdownCell() {
                 onChange={setMarkdown}
                 name="UNIQUE_ID_OF_DIV"
                 editorProps={{ $blockScrolling: true }}
+                minLines={5}
+                maxLines={Infinity}
             />
             <button onClick={handleConvert}>
                 Convert

@@ -80,6 +80,8 @@ function CopilotCell() {
         onChange={setMarkdownContent}
         name="UNIQUE_ID_OF_DIV"
         editorProps={{ $blockScrolling: true }}
+        minLines={5}
+        maxLines={Infinity}
       />
       <button onClick={handleConvert}>
         Convert
@@ -95,6 +97,8 @@ function CopilotCell() {
         onChange={setCodeContent}
         name="UNIQUE_ID_OF_DIV"
         editorProps={{ $blockScrolling: true }}
+        minLines={5}
+        maxLines={Infinity}
       />
       <button onClick={handleExecute} disabled={!socket}>
         Run
