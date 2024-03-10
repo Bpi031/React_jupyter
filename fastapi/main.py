@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 from fastapi import File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 import os
 import re
 from GPTresponse import AzureOpenAIRequest
 from NER_spacy import DataFrameProcessor, SentenceProcessor
+import spacy
 
 app = FastAPI()
 
@@ -23,6 +23,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Load the model when the application starts
+nlp = None
+def load_model():
+    global nlp
+    if spacy.prefer_gpu():
+        print("Using GPU!")
+    else:
+        print("Using CPU :(")
+    nlp = spacy.load("en_core_web_lg")
+
+load_model()  
+
 #get GPT response
 @app.post("/GPTresponse")
 async def response(sentence: str):
@@ -37,42 +49,38 @@ async def process_data(file: UploadFile = File(...)):
     contents = await file.read()
     with open(file.filename, 'wb') as f:
         f.write(contents)
-    processor = DataFrameProcessor()
-    df = processor.process(file.filename)
+    df_processor = DataFrameProcessor(nlp)
+    df = df_processor.process(file.filename)
     os.remove(file.filename) 
     return {df}
 
 #mask by NER and return the sentence
 @app.post("/sentence")
 async def process_sentence(sentence: str):
-    processor = SentenceProcessor()
-    sentence = processor.get_entities(sentence)
+    sentence_processor = SentenceProcessor(nlp)
+    sentence = sentence_processor.get_entities(sentence)
     return {sentence}
-
 
 #final request process
 @app.post("/request")
 async def combined_process(sentence: str = Form(...), file: UploadFile = File(...)):
     
     # Mask the sentence
-    processor = SentenceProcessor()
-    entities = processor.get_entities(sentence)
+    sentence_processor = SentenceProcessor(nlp)
+    entities = sentence_processor.get_entities(sentence)
     
     # Mask the file 
     contents = await file.read()
     with open(file.filename, 'wb') as f:
         f.write(contents)
-    processor = DataFrameProcessor()
-    df = processor.process(file.filename)
+    df_processor = DataFrameProcessor(nlp)
+    df = df_processor.process(file.filename)
     os.remove(file.filename) 
 
     combine_request = "Code instruction:{}\n{}".format(entities, df)
 
     # Send to GPT
     azure_request = AzureOpenAIRequest()
-    ans = azure_request.get_response(combine_request, "You are a data analysis programmer, don't include any explanations in your responses.")
-    content = ans.choices[0].message.content
-    #match = re.search('```.*?\n(.*?)```', content, re.DOTALL)
-    #result = match.group(1).strip() if match else None
+    ans = azure_request.get_response(file_name='example.csv',docstring='combine_request')
+    content = azure_request.extract_code_block(ans)
     return {"content": content, "masked": combine_request}
-   
