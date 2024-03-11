@@ -28,7 +28,8 @@ function App() {
                 <MarkdownCell key={cell.id} />
               ) : (
                 <CopilotCell key={cell.id} />
-              )}
+              ) 
+            }
             </div>
           )}
         </KernelManager>
@@ -37,7 +38,7 @@ function App() {
         <FileUpload />
         <button onClick={() => addCell('code')} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-md">Add Code Cell</button>
         <button onClick={() => addCell('markdown')} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-md">Add Markdown Cell</button>
-        <button onClick={() => addCell('ner')} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-md">Add NER Cell</button>
+        <button onClick={() => addCell('copilot')} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-md">Add NER Cell</button>
         {cells.map((cell) =>
           <button key={cell.id} onClick={() => deleteCell(cell.id)} className="w-full py-2 px-4 bg-red-500 text-white rounded-md">Delete</button>
         )}

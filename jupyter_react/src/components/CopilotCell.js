@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import AceEditor from 'react-ace';
 import axios from 'axios';
 import { marked } from 'marked';
