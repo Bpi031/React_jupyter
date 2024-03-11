@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext} from 'react';
 import AceEditor from 'react-ace';
 import { KernelContext } from './KernelManager';
 import CellOutput from './CellOutput';
@@ -6,8 +6,8 @@ import CellOutput from './CellOutput';
 import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/theme-monokai';
 
-function CodeCell({ initialCode }) {
-  const [code, setCode] = useState(initialCode);
+function CodeCell() {
+  const [code, setCode] = useState('');
   const socket = useContext(KernelContext);
 
   const handleExecute = () => {
@@ -34,10 +34,6 @@ function CodeCell({ initialCode }) {
       console.error('WebSocket is not open: readyState ', socket.readyState);
     }
   };
-
-  useEffect(() => {
-    setCode(initialCode);
-  }, [initialCode]);
 
   return (
     <div>
