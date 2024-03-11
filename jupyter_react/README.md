@@ -1,7 +1,5 @@
 ## Get start
-npm install
-<<<<<<< HEAD
+```
+npm install <br/>
 npm start
-=======
-npm start
->>>>>>> 3d89099e (remove env files)
+```
