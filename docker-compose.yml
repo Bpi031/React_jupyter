@@ -1,0 +1,20 @@
+version: '3'
+services:
+  jupyter:
+    build: fastapi/jupyter/Dockerfile
+    ports:
+      - "8888:8888"
+  julia:
+    build: fastapi/julia/Dockerfile
+  rstudio:
+    image: rocker/rstudio
+    ports:
+      - "8890:8890"
+  fastapi:
+    build: fastapi/Dockerfile
+    ports:
+      - "8889:8889"
+  jupyter-react:
+    build: fastapi/jupyter_react/Dockerfile
+    ports:
+      - "3000:3000"

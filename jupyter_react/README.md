@@ -1,5 +1,5 @@
 ## Get start
 ```
-npm install <br/>
+npm install 
 npm start
 ```
