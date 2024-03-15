@@ -1,20 +1,30 @@
 version: '3'
 services:
   jupyter:
-    build: fastapi/jupyter/Dockerfile
+    build: ./fastapi/jupyter
+    image: react_jupyter-jupyter:latest
     ports:
       - "8888:8888"
-  julia:
-    build: fastapi/julia/Dockerfile
-  rstudio:
-    image: rocker/rstudio
-    ports:
-      - "8890:8890"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   fastapi:
-    build: fastapi/Dockerfile
+    build: ./fastapi
+    image: react_jupyter-fastapi:latest
     ports:
-      - "8889:8889"
+      - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   jupyter-react:
-    build: fastapi/jupyter_react/Dockerfile
+    build: ./jupyter_react
+    image: react_jupyter-jupyter-react:latest
     ports:
       - "3000:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+#  julia:
+#    build: ./fastapi/julia
+#  rstudio:
+#    image: rocker/rstudio
+#    ports:
+#      - "8890:8890"

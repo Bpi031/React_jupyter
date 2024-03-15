@@ -1,3 +1,15 @@
+## V1
+# Install the packages and env files 
+```
+cd pip install -r requirements.txt 
+cd ./jupyter_react && npm install 
+```
+# Start
+```
+chmod +x start_servers.sh 
+./start_servers.sh
+```
+
 ## Docker v2
 # Docker Services Startup and Build Guide
 
@@ -21,10 +33,18 @@ The `docker-compose.yml` file defines the following services:
 # Building the Services
 
 Before starting the services, you need to build the Docker images. Navigate to the directory containing the `docker-compose.yml` file and run:
-
+! select the server what you need
 ```bash
-docker-compose build
+docker-compose build --parallel
 ```
+Basic servers you need to build
+```bash
+docker-compose build jupyter-react &
+docker-compose build fastapi &
+docker-compose build jupyter &
+wait
+```
+
 
 # Start the service
 ```bash
@@ -34,16 +54,4 @@ docker-compose up
 # Stopping the Services
 ```bash
 docker-compose down
-```
-
-
-# Install the packages and env files v1
-```
-cd pip install -r requirements.txt 
-cd ./jupyter_react && npm install 
-```
-# Start
-```
-chmod +x start_servers.sh 
-./start_servers.sh
 ```
