@@ -4,7 +4,7 @@ import spacy
 class DevicePipeline:
     def __init__(self):
         # Use spacy.prefer_gpu() to use GPU if available
-        if spacy.prefer_gpu():
+        if spacy.prefer_gpu(1):
             print("Using GPU!")
         else:
             print("Using CPU :(")
@@ -61,7 +61,37 @@ class SentenceProcessor:
 
 
 if __name__ == "__main__":
-    process = DataFrameProcessor()
-    print(process.process('React_jupyter/fastapi/test/biostats.csv'))
-    sentence = SentenceProcessor()
-    print(sentence.get_entities('Scott is using his iPhone in the office. The office is in Glasgow.'))
+
+    import torch
+    import time
+
+    nlp = None
+
+    def load_model(device):
+        global nlp
+        if device.type == "cuda":
+            spacy.require_gpu(device.index)
+        else:
+            spacy.require_cpu()
+        nlp = spacy.load("en_core_web_lg") 
+
+    def speed_test(device, data):
+        global nlp
+        start_time = time.time()
+        if nlp is None:
+            load_model(device)
+        processor = DataFrameProcessor(nlp)
+        processor.process(data)
+        print(f"Speed test time on {device}: ", time.time() - start_time)
+
+    data = 'fastapi/test/biostats.csv'
+
+    if torch.cuda.is_available() and torch.cuda.device_count() > 1:
+        # Speed test on GPU 0
+        speed_test(torch.device("cuda:0"), data)
+
+        # Speed test on GPU 1
+        speed_test(torch.device("cuda:1"), data)
+
+    # Speed test on CPU
+    speed_test(torch.device("cpu"), data)    

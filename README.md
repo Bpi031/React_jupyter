@@ -1,4 +1,4 @@
-## V1
+## Developer Mode
 # Install the packages and env files 
 ```
 cd pip install -r requirements.txt 
@@ -10,7 +10,7 @@ chmod +x start_servers.sh
 ./start_servers.sh
 ```
 
-## Docker v2
+## Docker Mode, bugs fixing -> with ports connection problems
 # Docker Services Startup and Build Guide
 
 This guide will help you build and start the Docker services defined in the `docker-compose.yml` file.

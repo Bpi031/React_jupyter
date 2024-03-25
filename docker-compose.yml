@@ -1,6 +1,6 @@
 version: '3'
 services:
-  jupyter:
+  jupyter-server:
     build: ./fastapi/jupyter
     image: react_jupyter-jupyter:latest
     ports:

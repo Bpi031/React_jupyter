@@ -2,19 +2,19 @@
 FROM python:3.8
 
 # Set a directory for the app
-WORKDIR /fastapi
+WORKDIR /app
 
-# Copy requirements.txt file into the Docker image
-COPY requirements.txt .
+# Copy the requirements.txt file into the container at /app
+COPY requirements.txt /app/
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m spacy download en_core_web_lg
+# Copy the current directory contents into the container at /fastapi
+COPY . /app/
 
-# Copy the rest of the source code from your host to your image filesystem.
-COPY . /fastapi
-
-# Make port 80 available to the world outside this container
+# Make port 8000 available to the world outside this container
 EXPOSE 8000
 
 # Run the application with uvicorn and enable hot reloading
-CMD ["uvicorn", "main:app", "--reload", "--workers", "2" ]
+CMD ["uvicorn", "main:app", "--reload", "--log-level", "debug"]
