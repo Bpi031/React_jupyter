@@ -6,7 +6,7 @@ import { KernelContext } from './KernelManager';
 import CellOutput from './CellOutput';
 
 import 'ace-builds/src-noconflict/mode-python';
-import 'ace-builds/src-noconflict/theme-monokai';
+import 'ace-builds/src-noconflict/theme-twilight';
 
 function CopilotCell() {
   const [file, setFile] = useState('')
@@ -76,32 +76,56 @@ function CopilotCell() {
     <div>
       <AceEditor
         mode="markdown"
-        theme="monokai"
+        theme="twilight"
         onChange={setMarkdownContent}
         name="UNIQUE_ID_OF_DIV"
         editorProps={{ $blockScrolling: true }}
+        width='100%'
         minLines={5}
         maxLines={Infinity}
       />
-      <button onClick={handleConvert}>
-        Convert
+      <button 
+        type="button" 
+        class="text-black bg-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-gray-200 dark:hover:bg-gray-300 dark:focus:ring-gray-400"
+        onClick={handleConvert}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 2L6 22 18 12 6 2Z" />
+        </svg>
       </button>
       <div dangerouslySetInnerHTML={{ __html: html }} />
-      <input type='file' onChange={handleFileChange} />
-      <button onClick={handleGenerateCode}>Generate Code</button>
+      <label 
+        className="cursor-pointer text-black bg-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-gray-200 dark:hover:bg-gray-300 dark:focus:ring-gray-400"
+      >
+        <input type='file' onChange={handleFileChange} className="hidden" />
+        Upload File
+      </label>
+      <button 
+       type="button" 
+       class="text-black bg-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-gray-200 dark:hover:bg-gray-300 dark:focus:ring-gray-400"
+       onClick={handleGenerateCode}
+       >Generate Code</button>
       <pre>{masked}</pre>
       <AceEditor
         mode="python"
-        theme="monokai"
+        theme="twilight"
         value={codecontent}
         onChange={setCodeContent}
         name="UNIQUE_ID_OF_DIV"
         editorProps={{ $blockScrolling: true }}
+        width='100%'
         minLines={5}
         maxLines={Infinity}
       />
-      <button onClick={handleExecute} disabled={!socket}>
-        Run
+      <button 
+        type="button" 
+        class="text-black bg-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-gray-200 dark:hover:bg-gray-300 dark:focus:ring-gray-400"
+        onClick={handleExecute} 
+        disabled={!socket}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 2L6 22 18 12 6 2Z" />
+        </svg>
       </button>
       {socket && <CellOutput socket={socket} />}
     </div>

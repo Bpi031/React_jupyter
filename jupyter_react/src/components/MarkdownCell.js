@@ -3,7 +3,7 @@ import AceEditor from 'react-ace';
 import { marked } from 'marked';
 
 import 'ace-builds/src-noconflict/mode-markdown';
-import 'ace-builds/src-noconflict/theme-monokai';
+import 'ace-builds/src-noconflict/theme-twilight';
 
 function MarkdownCell() {
     const [markdown, setMarkdown] = useState('');
@@ -18,15 +18,22 @@ function MarkdownCell() {
         <div>
             <AceEditor
                 mode="markdown"
-                theme="monokai"
+                theme="twilight"
                 onChange={setMarkdown}
                 name="UNIQUE_ID_OF_DIV"
                 editorProps={{ $blockScrolling: true }}
+                width='100%'
                 minLines={5}
                 maxLines={Infinity}
             />
-            <button onClick={handleConvert}>
-                Convert
+            <button 
+                type="button" 
+                class="text-black bg-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-gray-200 dark:hover:bg-gray-300 dark:focus:ring-gray-400"
+                onClick={handleConvert}
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 2L6 22 18 12 6 2Z" />
+            </svg>
             </button>
             <div dangerouslySetInnerHTML={{ __html: html }} />
         </div>

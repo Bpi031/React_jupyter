@@ -18,10 +18,10 @@ function App() {
 
   return (
     <div className="flex">
-      <div className="flex-grow">
+      <div className="flex-grow ">
         <KernelManager>
           {cells.map((cell) =>
-            <div key={cell.id}>
+            <div key={cell.id} className="w-4/6">
               {cell.type === 'code' ? (
                 <CodeCell key={cell.id} />
               ) : cell.type === 'markdown' ? (
@@ -34,7 +34,7 @@ function App() {
           )}
         </KernelManager>
       </div>
-      <div className="fixed right-0 top-0 h-screen overflow-auto space-y-4 p-4 flex flex-col">
+      <div className="fixed right-0 top-0 h-screen overflow-auto space-y-2 p-4 flex flex-col w-1/6">
         <FileUpload />
         <button onClick={() => addCell('code')} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-md">Add Code Cell</button>
         <button onClick={() => addCell('markdown')} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-md">Add Markdown Cell</button>
