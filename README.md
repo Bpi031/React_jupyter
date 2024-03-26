@@ -10,7 +10,7 @@ chmod +x start_servers.sh
 ./start_servers.sh
 ```
 
-# Docker Mode, bugs fixing -> with ports connection problems
+# Docker deploy Mode
 ## Docker Services Startup and Build Guide
 
 This guide will help you build and start the Docker services defined in the `docker-compose.yml` file.
@@ -25,8 +25,9 @@ This guide will help you build and start the Docker services defined in the `doc
 The `docker-compose.yml` file defines the following services:
 
 - `jupyter`: A Jupyter notebook server. Accessible at `http://localhost:8888`.
-- `julia`: A Julia server. 
-- `rstudio`: An RStudio server. Accessible at `http://localhost:8890`.
+- `python`: A Python with anaconda packages.
+- `julia`: A Julia kernel. 
+- `rstudio`: An RStudio kernel.
 - `fastapi-middleware`: A middle contain NER model and dataframe process. Accessible at `http://localhost:8000`.
 - `jupyter-react`: A front end web for code edit. Accessible at `http://localhost:3000`.
 
