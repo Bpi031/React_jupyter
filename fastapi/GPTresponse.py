@@ -11,7 +11,7 @@ class AzureOpenAIRequest:
         self.client = AzureOpenAI(
             azure_endpoint = "https://hkust.azure-api.net",
             api_version = "2024-02-01",
-            api_key = os.getenv('AZURE_OPENAI_API_KE') # Replace with your Azure OpenAI API key https://hkust.developer.azure-api.net
+            api_key = os.getenv('AZURE_OPENAI_API_KEY') # Replace with your Azure OpenAI API key https://hkust.developer.azure-api.net
         )
 
     def get_response(self,file_name, docstring):
