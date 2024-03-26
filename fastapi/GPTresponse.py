@@ -1,14 +1,17 @@
+from dotenv import load_dotenv
 from openai import AzureOpenAI
 import re
+import os
 
+load_dotenv()
 # Azure openAI request
 # Parameters
 class AzureOpenAIRequest:
     def __init__(self):
         self.client = AzureOpenAI(
             azure_endpoint = "https://hkust.azure-api.net",
-            api_version = "2023-05-15",
-            api_key = "f0f00b34e41f4bb4b68ad79231843c9e" 
+            api_version = "2024-02-01",
+            api_key = os.getenv('AZURE_OPENAI_API_KE') # Replace with your Azure OpenAI API key https://hkust.developer.azure-api.net
         )
 
     def get_response(self,file_name, docstring):
