@@ -29,9 +29,9 @@ This guide will help you build and start the Docker services defined in the `doc
 The `docker-compose.yml` file defines the following services:
 
 - `jupyter`: A Jupyter notebook server. Accessible at `http://localhost:8888`.
-- `python`: A Python with anaconda packages.
-- `julia`: A Julia kernel. 
-- `rstudio`: An RStudio kernel.
+    - `python`: A Python with anaconda packages.
+    - `julia`: A Julia kernel. 
+    - `rstudio`: An RStudio kernel.
 - `fastapi-middleware`: A middle contain NER model and dataframe process. Accessible at `http://localhost:8000`.
 - `jupyter-react`: A front end web for code edit. Accessible at `http://localhost:3000`.
 
