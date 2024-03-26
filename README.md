@@ -38,7 +38,7 @@ The `docker-compose.yml` file defines the following services:
 ## Building the Services
 
 Before starting the services, you need to build the Docker images. Navigate to the directory containing the `docker-compose.yml` file and run:
-! select the server what you need
+
 ```bash
 docker-compose build 
 ```
