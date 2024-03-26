@@ -1,7 +1,7 @@
 ## Developer Mode
 # Install the packages and env files 
 ```
-cd pip install -r requirements.txt 
+cd fastapi && pip install -r requirements.txt 
 cd ./jupyter_react && npm install 
 ```
 # Start
