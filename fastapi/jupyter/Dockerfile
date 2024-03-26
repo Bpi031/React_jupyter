@@ -6,7 +6,7 @@ FROM python:3.8-slim-buster
 WORKDIR /app
 
 # Add the current directory contents into the container at /app
-ADD . /app
+ADD . .
 
 # Install Jupyter
 RUN pip install jupyter
@@ -15,4 +15,4 @@ RUN pip install jupyter
 EXPOSE 8888
 
 # Run Jupyter server when the container launches with the specified options
-CMD ["jupyter", "server", "--ServerApp.allow_origin='http://127.0.0.1:3000'","--allow-root"]
+CMD ["jupyter", "server", "--ServerApp.allow_origin='*'", "--ServerApp.token='123456'", "--allow-root"]
