@@ -42,14 +42,6 @@ Before starting the services, you need to build the Docker images. Navigate to t
 ```bash
 docker-compose build 
 ```
-Basic servers you need to build if you don't want to build all
-```bash
-docker-compose build jupyter-react &
-docker-compose build fastapi &
-docker-compose build jupyter &
-wait
-```
-
 
 ## Start the service
 ```bash
