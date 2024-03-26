@@ -4,6 +4,10 @@
 cd fastapi && pip install -r requirements.txt 
 cd ./jupyter_react && npm install 
 ```
+## Add .env file in ./fastapi
+```
+AZURE_OPENAI_API_KEY = replace_with_your_api
+```
 ## Start
 ```
 chmod +x start_servers.sh 
