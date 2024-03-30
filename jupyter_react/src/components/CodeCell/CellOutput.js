@@ -7,11 +7,14 @@ function CellOutput({ socket }) {
   useEffect(() => {
     if (socket) {
       socket.onmessage = (message) => {
+        console.log('Server response:', message.data);
         const data = JSON.parse(message.data);
         if (data.header.msg_type === 'execute_result' || data.header.msg_type === 'stream') {
+          console.log('Text output:', data.content.text);
           setOutput(prevOutput => prevOutput + '\n' + data.content.text);
-        } else if (data.header.msg_type === 'display_data') {
-          setImage(data.content.data['image/png']);
+        } else if (data.header.msg_type === 'display_data' && data.content.data['image/png']) {
+          console.log('Image output:', data.content.data['image/png']);
+          setImage(`data:image/png;base64,${data.content.data['image/png']}`);
         }
       };
     }
@@ -20,7 +23,7 @@ function CellOutput({ socket }) {
   return (
     <div>
       <pre>{output}</pre>
-      {image && <img src={`data:image/png;base64,${image}`} alt="plot" />}
+      {image && <img src={image} alt="plot" />}
     </div>
   );
 }

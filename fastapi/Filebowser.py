@@ -1,26 +1,29 @@
+from fastapi import FastAPI, Request, UploadFile, File
+from fastapi.staticfiles import StaticFiles
 import os
-from fastapi import HTTPException
 
-class Filebowser:
-    def __init__(self, base_dir):
-        self.base_dir = base_dir
+directory = "/home/haha/React_jupyter/fastapi/test"
 
-    def get_full_path(self, file_path):
-        return os.path.join(self.base_dir, file_path)
-    
-    def read_file(self, file_path):
-        try:
-            with open(os.path.join(self.base_dir, file_path), 'r') as file:
-                return file.read()
-        except FileNotFoundError:
-            raise HTTPException(status_code=404, detail="File not found")
+class FileBrowser:
+    def __init__(self, app: FastAPI):
+        app.mount("/files", StaticFiles(directory=directory), name="files")
 
-    def add_file(self, file_path, content):
-        with open(os.path.join(self.base_dir, file_path), 'w') as file:
-            file.write(content)
+    def list_files(self, request: Request):
+        files = os.listdir(directory)
+        files_paths = sorted([f"{f}" for f in files])
+        print(files_paths)
+        return {"files": files_paths}
 
-    def delete_file(self, file_path):
-        try:
-            os.remove(os.path.join(self.base_dir, file_path))
-        except FileNotFoundError:
-            raise HTTPException(status_code=404, detail="File not found")
+    async def upload_files(self, request: Request, file: UploadFile = File(...)):
+        contents = await file.read()
+        with open(f"{directory}/{file.filename}", "wb") as f:
+            f.write(contents)
+        return {"filename": file.filename}
+
+    def delete_file(self, file_name: str):
+        os.remove(f"{directory}/{file_name}")
+        return {"filename": file_name}
+
+    def rename_file(self, file_name: str, new_name: str):
+        os.rename(f"{directory}/{file_name}", f"{directory}/{new_name}")
+        return {"filename": new_name}

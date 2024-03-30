@@ -1,13 +1,14 @@
-from fastapi import FastAPI
-from fastapi import File, Form, UploadFile, HTTPException
+from fastapi import FastAPI, Request
+from fastapi import File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from GPTresponse import AzureOpenAIRequest
 from NER_spacy import DataFrameProcessor, SentenceProcessor
-from Filebowser import Filebowser 
+from Filebowser import FileBrowser
 import spacy
 
 app = FastAPI()
+file_browser = FileBrowser(app)
 
 #Rounting
 origins = [
@@ -85,30 +86,23 @@ class transformer:
         ans = azure_request.get_response(file_name='example.csv',docstring='combine_request')
         content = azure_request.extract_code_block(ans)
         return {"content": content, "masked": combine_request}
+    
 
+#file browser
+class FileBrowser:
 
+    @app.get("/files")
+    def list_files(request: Request):
+        return file_browser.list_files(request)
 
-# Read, insert, delete local files
-class FileManager:
-    def __init__(self):
-        self.file_manager = Filebowser('/path/to/your/base/dir')
+    @app.post("/files")
+    async def upload_files(request: Request, file: UploadFile = File(...)):
+        return await file_browser.upload_files(request, file)
 
-    @app.get("/files/{file_path:path}")
-    async def get_file(self, file_path: str):
-        try:
-            return {"content": self.file_manager.read_file(file_path)}
-        except HTTPException:
-            raise HTTPException(status_code=404, detail="File not found")
+    @app.delete("/files")
+    def delete_file(file_name: str):
+        return file_browser.delete_file(file_name)
 
-    @app.post("/files/{file_path:path}")
-    async def add_file(self, file_path: str, content: str):
-        self.file_manager.add_file(file_path, content)
-        return {"message": "File added successfully"}
-
-    @app.delete("/files/{file_path:path}")
-    async def delete_file(self, file_path: str):
-        try:
-            self.file_manager.delete_file(file_path)
-            return {"message": "File deleted successfully"}
-        except HTTPException:
-            raise HTTPException(status_code=404, detail="File not found")
+    @app.put("/files")
+    def rename_file(file_name, new_name):
+        return file_browser.rename_file(file_name, new_name)

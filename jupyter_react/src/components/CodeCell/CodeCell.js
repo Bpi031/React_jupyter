@@ -4,7 +4,7 @@ import { KernelContext } from './KernelManager';
 import CellOutput from './CellOutput';
 
 import 'ace-builds/src-noconflict/mode-python';
-import 'ace-builds/src-noconflict/theme-twilight';
+import 'ace-builds/src-noconflict/theme-chrome';
 
 function CodeCell() {
   const [code, setCode] = useState('');
@@ -40,7 +40,7 @@ function CodeCell() {
       
       <AceEditor
         mode="python"
-        theme="twilight"
+        theme="chrome"
         onChange={setCode}
         name="UNIQUE_ID_OF_DIV"
         editorProps={{ $blockScrolling: true }}
@@ -50,12 +50,12 @@ function CodeCell() {
       />
       <button 
         type="button" 
-        class="text-black bg-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-gray-200 dark:hover:bg-gray-300 dark:focus:ring-gray-400"
+        className="text-black bg-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-gray-200 dark:hover:bg-gray-300 dark:focus:ring-gray-400"
         onClick={handleExecute} 
         disabled={!socket}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 2L6 22 18 12 6 2Z" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 2L6 22 18 12 6 2Z" />
         </svg>
       </button>
       {socket && <CellOutput socket={socket} />}

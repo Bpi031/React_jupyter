@@ -42,6 +42,10 @@ Before starting the services, you need to build the Docker images. Navigate to t
 ```bash
 docker-compose build 
 ```
+Alternative
+```bash
+docker-compose build --parallel
+```
 
 ## Start the service
 ```bash
