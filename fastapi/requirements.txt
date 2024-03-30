@@ -1,5 +1,5 @@
 openai==1.14.1
-spacy==3.7.4
+spacy==3.7.4`
 transformers==4.36.2
 jupyter
 uvicorn

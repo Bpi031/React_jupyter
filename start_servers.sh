@@ -15,9 +15,6 @@ cd ./fastapi && uvicorn main:app --reload &
 # Change to parent directory
 #cd ..
 
-# Activate the desired Python environment
-#source ./anaconda3/envs/pythonProject/bin/activate
-
 # Start Jupyter server
 jupyter server --ServerApp.allow_origin='http://localhost:3000' --ServerApp.token='123456' &
 
