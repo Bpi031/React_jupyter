@@ -1,10 +1,13 @@
 # Developer Mode
 ## Install the packages and env files 
+```bash
+cd fastapi 
+chmod +x start_servers.sh 
+./install_venv.sh
+
+cd ../jupyter_react && npm install 
 ```
-cd fastapi && pip install -r requirements.txt 
-cd ./jupyter_react && npm install 
-```
-## Add .env file in ./fastapi
+## Add .env file in ./fastapi with
 ```
 AZURE_OPENAI_API_KEY = replace_with_your_api
 ```
