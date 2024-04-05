@@ -9,7 +9,7 @@ This project focuses on enhancing data security in data analysis processes. It a
 The project includes:
 
 1. A FastAPI server for handling requests.
-2. A Jupyter notebook server for data analysis and model training.
+2. A Jupyter notebook server to execute the code from front-end.
 3. A front-end web application for code editing and interaction.
 
 The project can be run in a development environment or deployed using Docker for scalability and ease of use. It is an excellent choice for anyone looking to perform secure data analysis while maintaining the privacy and security of the underlying data.
