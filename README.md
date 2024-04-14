@@ -3,7 +3,7 @@
 This project focuses on enhancing data security in data analysis processes. It achieves this by:
 
 1. Utilizing a Named Entity Recognition (NER) model to pixelate sensitive information in dataframes, thereby ensuring data privacy and security.
-2. Leveraging the Language Model (LLM) to provide robust and efficient data processing capabilities. This combination of NER and LLM allows for secure, efficient, and accurate data analysis.
+2. Large Language Model (LLM) to provide robust and efficient data processing capabilities. This combination of NER and LLM allows for secure, efficient, and accurate data analysis.
 3. Offering a significant improvement in data analysis coding speed for the traditional finance industry. With the power of LLM, financial analysts can code faster without worrying about data leakage.
 
 The project includes:
